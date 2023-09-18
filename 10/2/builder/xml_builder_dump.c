@@ -34,7 +34,7 @@
 typedef struct _PrivInfo
 {
 	FILE* fp;
-}PrivInfo;
+} PrivInfo;
 
 static void xml_builder_dump_on_start_element(XmlBuilder* thiz, const char* tag, const char** attrs)
 {
@@ -42,7 +42,7 @@ static void xml_builder_dump_on_start_element(XmlBuilder* thiz, const char* tag,
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 	fprintf(priv->fp, "<%s", tag);
 
-	for(i = 0; attrs != NULL && attrs[i] != NULL && attrs[i + 1] != NULL; i += 2)
+	for (i = 0; attrs != NULL && attrs[i] != NULL && attrs[i + 1] != NULL; i += 2)
 	{
 		fprintf(priv->fp, " %s=\"%s\"", attrs[i], attrs[i + 1]);
 	}
@@ -83,7 +83,7 @@ static void xml_builder_dump_on_pi_element(XmlBuilder* thiz, const char* tag, co
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 	fprintf(priv->fp, "<?%s", tag);
 
-	for(i = 0; attrs != NULL && attrs[i] != NULL && attrs[i + 1] != NULL; i += 2)
+	for (i = 0; attrs != NULL && attrs[i] != NULL && attrs[i + 1] != NULL; i += 2)
 	{
 		fprintf(priv->fp, " %s=\"%s\"", attrs[i], attrs[i + 1]);
 	}
@@ -113,7 +113,7 @@ XmlBuilder* xml_builder_dump_create(FILE* fp)
 {
 	XmlBuilder* thiz = (XmlBuilder*)calloc(1, sizeof(XmlBuilder));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 

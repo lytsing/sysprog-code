@@ -37,18 +37,18 @@ typedef struct _FifoRing
 	int w_cursor;
 	size_t length;
 	void* data[0];
-	
-}FifoRing;
+
+} FifoRing;
 
 FifoRing* fifo_ring_create(size_t length)
 {
 	FifoRing* thiz = NULL;
-	
+
 	return_val_if_fail(length > 1, NULL);
 
 	thiz = (FifoRing*)malloc(sizeof(FifoRing) + length * sizeof(void*));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		thiz->r_cursor = 0;
 		thiz->w_cursor = 0;
@@ -63,7 +63,7 @@ Ret fifo_ring_pop(FifoRing* thiz, void** data)
 	Ret ret = RET_FAIL;
 	return_val_if_fail(thiz != NULL && data != NULL, RET_FAIL);
 
-	if(thiz->r_cursor != thiz->w_cursor)
+	if (thiz->r_cursor != thiz->w_cursor)
 	{
 		*data = thiz->data[thiz->r_cursor];
 		thiz->r_cursor = (thiz->r_cursor + 1)%thiz->length;
@@ -74,15 +74,15 @@ Ret fifo_ring_pop(FifoRing* thiz, void** data)
 	return ret;
 }
 
-Ret fifo_ring_push(FifoRing* thiz, void* data)    
+Ret fifo_ring_push(FifoRing* thiz, void* data)
 {
 	int w_cursor = 0;
 	Ret ret = RET_FAIL;
 	return_val_if_fail(thiz != NULL, RET_FAIL);
 
 	w_cursor = (thiz->w_cursor + 1) % thiz->length;
-	
-	if(w_cursor != thiz->r_cursor)
+
+	if (w_cursor != thiz->r_cursor)
 	{
 		thiz->data[thiz->w_cursor] = data;
 		thiz->w_cursor = w_cursor;
@@ -95,7 +95,7 @@ Ret fifo_ring_push(FifoRing* thiz, void* data)
 
 void fifo_ring_destroy(FifoRing* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		free(thiz);
 	}
@@ -116,9 +116,9 @@ static void* thread_push(void* param)
 	int i = 0;
 	FifoRing* fifo = (FifoRing*)param;
 
-	while(i < NR)
+	while (i < NR)
 	{
-		if(fifo_ring_push(fifo, (void*)i) == RET_OK)
+		if (fifo_ring_push(fifo, (void*)i) == RET_OK)
 		{
 			i++;
 		}
@@ -137,9 +137,9 @@ static void* thread_pop(void* param)
 	void* data = 0;
 	FifoRing* fifo = (FifoRing*)param;
 
-	while(i < NR)
+	while (i < NR)
 	{
-		if(fifo_ring_pop(fifo, (void**)&data) == RET_OK)
+		if (fifo_ring_pop(fifo, (void**)&data) == RET_OK)
 		{
 			assert(i == (int)data);
 			i++;
@@ -166,7 +166,7 @@ void push_pop_test(size_t fifo_length)
 	pthread_join(pop_tid, NULL);
 
 	fifo_ring_destroy(fifo);
-	
+
 	return;
 }
 

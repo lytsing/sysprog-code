@@ -42,10 +42,10 @@ Module* module_create(const char* file_name, ModuleFlags flags)
 	Module* thiz = NULL;
 	return_val_if_fail(file_name != NULL, NULL);
 	
-	if((thiz = malloc(sizeof(Module))) != NULL)
+	if ((thiz = malloc(sizeof(Module))) != NULL)
 	{
 		thiz->handle = dlopen(file_name, flags & MODULE_FLAGS_DELAY ? RTLD_LAZY : RTLD_NOW);
-		if(thiz->handle == NULL)
+		if (thiz->handle == NULL)
 		{
 			free(thiz);
 			thiz = NULL;
@@ -66,9 +66,9 @@ void*   module_sym(Module* thiz, const char* func_name)
 
 void    module_destroy(Module* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
-		if(thiz->handle != NULL)
+		if (thiz->handle != NULL)
 		{
 			dlclose(thiz->handle);
 		}

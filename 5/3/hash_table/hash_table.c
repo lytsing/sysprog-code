@@ -48,13 +48,13 @@ HashTable* hash_table_create(DataDestroyFunc data_destroy, void* ctx, DataHashFu
 	
 	thiz = (HashTable*)malloc(sizeof(HashTable));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		thiz->hash = hash;
 		thiz->slot_nr  = slot_nr;
 		thiz->data_destroy_ctx = ctx;
 		thiz->data_destroy = data_destroy;
-		if((thiz->slots = (DList**)calloc(sizeof(DList*)*slot_nr, 1)) == NULL)
+		if ((thiz->slots = (DList**)calloc(sizeof(DList*)*slot_nr, 1)) == NULL)
 		{
 			free(thiz);
 			thiz = NULL;
@@ -71,7 +71,7 @@ Ret      hash_table_insert(HashTable* thiz, void* data)
 	return_val_if_fail(thiz != NULL, RET_INVALID_PARAMS);
 
 	index = thiz->hash(data)%thiz->slot_nr;
-	if(thiz->slots[index] == NULL)
+	if (thiz->slots[index] == NULL)
 	{
 		thiz->slots[index] = dlist_create(thiz->data_destroy, thiz->data_destroy_ctx);
 	}
@@ -88,7 +88,7 @@ Ret      hash_table_delete(HashTable* thiz, DataCompareFunc cmp, void* data)
 
 	index = thiz->hash(data)%thiz->slot_nr;
 	dlist = thiz->slots[index];
-	if(dlist != NULL)
+	if (dlist != NULL)
 	{
 		index = dlist_find(dlist, cmp, data);
 	
@@ -105,9 +105,9 @@ size_t   hash_table_length(HashTable* thiz)
 
 	return_val_if_fail(thiz != NULL, 0);
 
-	for(i = 0; i < thiz->slot_nr; i++)
+	for (i = 0; i < thiz->slot_nr; i++)
 	{
-		if(thiz->slots[i] != NULL)
+		if (thiz->slots[i] != NULL)
 		{
 			nr += dlist_length(thiz->slots[i]);
 		}
@@ -124,7 +124,7 @@ Ret    hash_table_find(HashTable* thiz, DataCompareFunc cmp, void* data, void** 
 	
 	index = thiz->hash(data)%thiz->slot_nr;
 	dlist = thiz->slots[index];
-	if(dlist != NULL)
+	if (dlist != NULL)
 	{
 		index = dlist_find(dlist, cmp, data);
 
@@ -140,9 +140,9 @@ Ret      hash_table_foreach(HashTable* thiz, DataVisitFunc visit, void* ctx)
 	
 	return_val_if_fail(thiz != NULL && visit != NULL, RET_INVALID_PARAMS);
 
-	for(i = 0; i < thiz->slot_nr; i++)
+	for (i = 0; i < thiz->slot_nr; i++)
 	{
-		if(thiz->slots[i] != NULL)
+		if (thiz->slots[i] != NULL)
 		{
 			dlist_foreach(thiz->slots[i], visit, ctx);
 		}
@@ -155,11 +155,11 @@ void hash_table_destroy(HashTable* thiz)
 {
 	size_t i = 0;
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
-		for(i = 0; i < thiz->slot_nr; i++)
+		for (i = 0; i < thiz->slot_nr; i++)
 		{
-			if(thiz->slots[i] != NULL)
+			if (thiz->slots[i] != NULL)
 			{
 				dlist_destroy(thiz->slots[i]);
 				thiz->slots[i] = NULL;
@@ -183,7 +183,7 @@ int main(int argc, char* argv[])
 	int ret_data = 0;
 	HashTable* hash_table = hash_table_create(NULL, NULL, hash_int, 31);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(hash_table_length(hash_table) == i);
 		assert(hash_table_insert(hash_table, (void*)i) == RET_OK);
@@ -192,7 +192,7 @@ int main(int argc, char* argv[])
 		assert(ret_data == i);
 	}
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(hash_table_delete(hash_table, cmp_int, (void*)i) == RET_OK);
 		assert(hash_table_length(hash_table) == (n - i -1));

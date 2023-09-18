@@ -42,7 +42,7 @@ typedef enum _XmlNodeType
 	XML_NODE_TEXT,
 	XML_NODE_NORMAL,
 	XML_NODE_COMMENT
-}XmlNodeType;
+} XmlNodeType;
 
 typedef struct _XmlAttr
 {
@@ -50,19 +50,19 @@ typedef struct _XmlAttr
 	char* value;
 
 	struct _XmlAttr* next;
-}XmlAttr;
+} XmlAttr;
 
 typedef struct _XmlNodePi
 {
-	char* name;	
+	char* name;
 	XmlAttr* first_attr;
-}XmlNodePi;
+} XmlNodePi;
 
 typedef struct _XmlNodeNormal
 {
 	char* name;
 	XmlAttr* first_attr;
-}XmlNodeNormal;
+} XmlNodeNormal;
 
 typedef struct _XmlNode
 {
@@ -73,18 +73,18 @@ typedef struct _XmlNode
 		char* comment;
 		XmlNodePi pi;
 		XmlNodeNormal normal;
-	}u;
+	} u;
 	struct _XmlNode* parent;
 	struct _XmlNode* children;
 	struct _XmlNode* sibling;
-}XmlNode;
+} XmlNode;
 
 typedef Ret (*XmlNodeVisitFunc)(void* ctx, int level, XmlNode* node);
 
 XmlNode* xml_node_create_text(const char* text);
 XmlNode* xml_node_create_comment(const char* comment);
 XmlNode* xml_node_create_pi(const char* name, const char** attrs);
-XmlNode* xml_node_create_normal(const char* name, const char** attrs); 
+XmlNode* xml_node_create_normal(const char* name, const char** attrs);
 XmlNode* xml_node_append_sibling(XmlNode* node, XmlNode* sibling);
 XmlNode* xml_node_append_child(XmlNode* node, XmlNode* child);
 

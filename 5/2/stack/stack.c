@@ -40,9 +40,9 @@ Stack* stack_create(DataDestroyFunc data_destroy, void* ctx)
 {
 	Stack* thiz = (Stack*)malloc(sizeof(Stack));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
-		if((thiz->dlist = dlist_create(data_destroy, ctx)) == NULL)
+		if ((thiz->dlist = dlist_create(data_destroy, ctx)) == NULL)
 		{
 			free(thiz);
 			thiz = NULL;
@@ -89,7 +89,7 @@ Ret      stack_foreach(Stack* thiz, DataVisitFunc visit, void* ctx)
 
 void stack_destroy(Stack* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		dlist_destroy(thiz->dlist);
 		thiz->dlist = NULL;
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 	int ret_data = 0;
 	Stack* stack = stack_create(NULL, NULL);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(stack_push(stack, (void*)i) == RET_OK);
 		assert(stack_top(stack, (void**)&ret_data) == RET_OK);
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
 
 	stack_foreach(stack, print_int, NULL);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(stack_top(stack, (void**)&ret_data) == RET_OK);
 		assert(ret_data == (n - i - 1));
@@ -132,5 +132,4 @@ int main(int argc, char* argv[])
 	return 0;
 }
 #endif/*STACK_TEST*/
-
 

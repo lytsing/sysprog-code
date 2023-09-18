@@ -36,7 +36,7 @@
 typedef struct _PrivInfo
 {
 	pthread_mutex_t mutex;
-}PrivInfo;
+} PrivInfo;
 
 static Ret  locker_pthread_lock(Locker* thiz)
 {
@@ -71,7 +71,7 @@ Locker* locker_pthread_create(void)
 {
 	Locker* thiz = (Locker*)malloc(sizeof(Locker) + sizeof(PrivInfo));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 
@@ -84,5 +84,4 @@ Locker* locker_pthread_create(void)
 
 	return thiz;
 }
-
 

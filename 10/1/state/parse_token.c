@@ -13,21 +13,21 @@ int parse_token(const char* text, const char* delims, OnTokenFunc on_token, void
 		STAT_INIT,
 		STAT_IN,
 		STAT_OUT,
-	}state = STAT_INIT;
+	} state = STAT_INIT;
 
 	int   count     = 0;
 	char* copy_text = strdup(text);
 	char* p         = copy_text;
 	char* token     = copy_text;
 
-	for(p = copy_text; *p != '\0'; p++)
+	for (p = copy_text; *p != '\0'; p++)
 	{
-		switch(state)
+		switch (state)
 		{
 			case STAT_INIT:
 			case STAT_OUT:
 			{
-				if(!IS_DELIM(*p))
+				if (!IS_DELIM(*p))
 				{
 					token = p;
 					state = STAT_IN;
@@ -36,7 +36,7 @@ int parse_token(const char* text, const char* delims, OnTokenFunc on_token, void
 			}
 			case STAT_IN:
 			{
-				if(IS_DELIM(*p))
+				if (IS_DELIM(*p))
 				{
 					*p = '\0';
 					on_token(ctx, count++, token);
@@ -48,7 +48,7 @@ int parse_token(const char* text, const char* delims, OnTokenFunc on_token, void
 		}
 	}
 
-	if(state == STAT_IN)
+	if (state == STAT_IN)
 	{
 		on_token(ctx, count++, token);
 	}

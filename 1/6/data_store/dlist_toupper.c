@@ -6,11 +6,11 @@
 static DListRet str_toupper(void* ctx, void* data)
 {
 	char* p = (char*)data;
-	if(p != NULL)
+	if (p != NULL)
 	{
-		while(*p != '\0')
+		while (*p != '\0')
 		{
-			if(islower(*p))
+			if (islower(*p))
 			{
 				*p = toupper(*p);
 			}

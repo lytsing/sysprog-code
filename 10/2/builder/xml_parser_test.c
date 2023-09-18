@@ -17,10 +17,10 @@ char* read_file(const char* file_name)
 	char* buffer = NULL;
 	FILE* fp = fopen(file_name, "r");
 
-	if(fp != NULL)
+	if (fp != NULL)
 	{
 		struct stat st = {0};
-		if(stat(file_name, &st) == 0)
+		if (stat(file_name, &st) == 0)
 		{
 			buffer = malloc(st.st_size + 1);
 			fread(buffer, st.st_size, 1, fp);
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 
 	xml_parser_set_builder(thiz, builder);
 
-	if(argc > 1)
+	if (argc > 1)
 	{
 		char* buffer = read_file(argv[1]);
 		xml_parser_parse(thiz, buffer);

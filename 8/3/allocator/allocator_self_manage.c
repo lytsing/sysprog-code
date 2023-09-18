@@ -6,7 +6,7 @@ typedef struct _FreeNode
 	size_t length;
 	struct _FreeNode* next;
 	struct _FreeNode* prev;
-}FreeNode;
+} FreeNode;
 
 typedef struct _PrivInfo
 {
@@ -14,7 +14,7 @@ typedef struct _PrivInfo
 	size_t length;
 
 	FreeNode* free_list;
-}PrivInfo;
+} PrivInfo;
 
 #define R8B(size) (((size+7) >> 3) << 3)
 #define MIN_SIZE  R8B(sizeof(FreeNode))
@@ -25,7 +25,7 @@ static void*  allocator_self_manage_calloc(Allocator* thiz, size_t nmemb, size_t
 	size_t length = nmemb * size;
 	char* ptr = allocator_alloc(thiz, length);
 
-	if(ptr != NULL)
+	if (ptr != NULL)
 	{
 		memset(ptr, 0x00, length);
 	}
@@ -40,29 +40,29 @@ static void*  allocator_self_manage_alloc(Allocator* thiz, size_t size)
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 
 	/*查找第一个满足条件的空闲块*/
-	for(iter = priv->free_list; iter != NULL; iter = iter->next)
+	for (iter = priv->free_list; iter != NULL; iter = iter->next)
 	{
-		if(iter->length > length)
+		if (iter->length > length)
 		{
 			break;
 		}
 	}
-	
+
 	return_val_if_fail(iter != NULL, NULL);
-	
+
     /*如果找到的空闲块刚好满足需求，就从空闲块链表中移出它*/
-	if(iter->length < (length + MIN_SIZE))
+	if (iter->length < (length + MIN_SIZE))
 	{
-		if(priv->free_list == iter)
+		if (priv->free_list == iter)
 		{
 			priv->free_list = iter->next;
 		}
 
-		if(iter->prev != NULL)
+		if (iter->prev != NULL)
 		{
 			iter->prev->next = iter->next;
 		}
-		if(iter->next != NULL)
+		if (iter->next != NULL)
 		{
 			iter->next->prev = iter->prev;
 		}
@@ -71,21 +71,21 @@ static void*  allocator_self_manage_alloc(Allocator* thiz, size_t size)
 	{
 		/*如果找到的空闲块比较大，就把它拆成两个块，把多余的空闲内存放回去*/
 		FreeNode* new_iter = (FreeNode*)((char*)iter + length);
-		
+
 		new_iter->length = iter->length - length;
 		new_iter->next = iter->next;
 		new_iter->prev = iter->prev;
 
-		if(iter->prev != NULL)
+		if (iter->prev != NULL)
 		{
 			iter->prev->next = new_iter;
 		}
-		if(iter->next != NULL)
+		if (iter->next != NULL)
 		{
 			iter->next->prev = new_iter;
 		}
 
-		if(priv->free_list == iter)
+		if (priv->free_list == iter)
 		{
 			priv->free_list = new_iter;
 		}
@@ -121,13 +121,13 @@ static void allocator_self_manage_merge(Allocator* thiz, FreeNode* iter)
 	FreeNode* prev = iter->prev;
 	FreeNode* next = iter->next;
 
-	if(prev != NULL && ((size_t)prev + prev->length) == (size_t)iter)
+	if (prev != NULL && ((size_t)prev + prev->length) == (size_t)iter)
 	{
 		allocator_self_manage_merge2(thiz, prev, iter);
 		allocator_self_manage_merge(thiz, prev);
 	}
 
-	if(next != NULL && ((size_t)iter + iter->length) == (size_t)next)
+	if (next != NULL && ((size_t)iter + iter->length) == (size_t)next)
 	{
 		allocator_self_manage_merge2(thiz, iter, next);
 		allocator_self_manage_merge(thiz, iter);
@@ -139,44 +139,44 @@ static void allocator_self_manage_merge(Allocator* thiz, FreeNode* iter)
 static void   allocator_self_manage_free(Allocator* thiz, void *ptr)
 {
 	FreeNode* iter = NULL;
-	FreeNode* free_iter = NULL; 
+	FreeNode* free_iter = NULL;
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
-	
+
 	return_if_fail(ptr != NULL);
 
 	free_iter = (FreeNode*)((char*)ptr - sizeof(size_t));
-	
+
 	free_iter->prev = NULL;
 	free_iter->next = NULL;
 
-	if(priv->free_list == NULL)
+	if (priv->free_list == NULL)
 	{
 		priv->free_list = free_iter;
 
 		return;
 	}
 	/*根据内存块地址的大小，把它插入到适当的位置。*/
-	for(iter = priv->free_list; iter != NULL; iter = iter->next)
+	for (iter = priv->free_list; iter != NULL; iter = iter->next)
 	{
-		if((size_t)iter > (size_t)free_iter)
+		if ((size_t)iter > (size_t)free_iter)
 		{
 			free_iter->next = iter;
 			free_iter->prev = iter->prev;
-			if(iter->prev != NULL)
+			if (iter->prev != NULL)
 			{
 				iter->prev->next = free_iter;
 			}
 			iter->prev = free_iter;
-			
-			if(priv->free_list == iter)
+
+			if (priv->free_list == iter)
 			{
 				priv->free_list = free_iter;
 			}
 
-			break;	
+			break;
 		}
 
-		if(iter->next == NULL)
+		if (iter->next == NULL)
 		{
 			iter->next = free_iter;
 			free_iter->prev = iter;
@@ -195,16 +195,16 @@ static void*  allocator_self_manage_realloc(Allocator* thiz, void *ptr, size_t s
 {
 	void* new_ptr = NULL;
 
-	if(ptr != NULL)
+	if (ptr != NULL)
 	{
 		size_t old_size = *(size_t*)((char*)ptr - sizeof(size_t)) - sizeof(size_t);
-		if(old_size >= size && old_size <= (size + MIN_SIZE))
+		if (old_size >= size && old_size <= (size + MIN_SIZE))
 		{
 			return ptr;
 		}
 
 		new_ptr = allocator_alloc(thiz, size);
-		if(new_ptr != NULL)
+		if (new_ptr != NULL)
 		{
 			memcpy(new_ptr, ptr, size < old_size ? size : old_size);
 			allocator_free(thiz, ptr);
@@ -220,7 +220,7 @@ static void*  allocator_self_manage_realloc(Allocator* thiz, void *ptr, size_t s
 
 static void   allocator_self_manage_destroy(Allocator* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 		priv->free_list = NULL;
@@ -235,12 +235,12 @@ static void   allocator_self_manage_destroy(Allocator* thiz)
 Allocator* allocator_self_manage_create(void* buffer, size_t length)
 {
 	Allocator* thiz = NULL;
-	
+
 	return_val_if_fail(buffer != NULL && length > MIN_SIZE, NULL);
 
 	thiz = (Allocator*)calloc(1, sizeof(Allocator)+sizeof(PrivInfo));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 
@@ -270,7 +270,7 @@ static void allocator_self_manage_dump(Allocator* thiz)
 	FreeNode* iter = NULL;
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 
-	for(iter = priv->free_list; iter != NULL; iter = iter->next, i++)
+	for (iter = priv->free_list; iter != NULL; iter = iter->next, i++)
 	{
 		printf("[%d] %p %d\n", i, iter, iter->length);
 	}
@@ -293,28 +293,28 @@ int main(int argc, char* argv[])
 	assert(R8B(9) == 16);
 	assert(R8B(18) == 24);
 
-	for(i = 0; i < n/3; i++)
+	for (i = 0; i < n/3; i++)
 	{
 		char* ptr = allocator_alloc(allocator, i);
 		allocator_free(allocator, ptr);
 		ptr = allocator_calloc(allocator, 1, i);
 		allocator_free(allocator, ptr);
 	}
-	
-	for(i = 0; i < sizeof(ptrs)/sizeof(ptrs[0]); i++)
+
+	for (i = 0; i < sizeof(ptrs)/sizeof(ptrs[0]); i++)
 	{
 		ptrs[i] = allocator_calloc(allocator, 1, i);
 		//ptrs[i] = allocator_realloc(allocator, ptrs[i], 2*i);
 	}
 
 //	allocator_self_manage_dump(allocator);
-	
-	for(i = 0; i < sizeof(ptrs)/sizeof(ptrs[0]); i++)
+
+	for (i = 0; i < sizeof(ptrs)/sizeof(ptrs[0]); i++)
 	{
 		allocator_free(allocator, ptrs[i]);
 		ptrs[i] = NULL;
 	}
-	
+
 	allocator_self_manage_dump(allocator);
 
 #if 0
@@ -325,7 +325,7 @@ int main(int argc, char* argv[])
 	}
 
 //	allocator_self_manage_dump(allocator);
-	
+
 	for(i = 0; i < sizeof(ptrs)/sizeof(ptrs[0]); i++)
 	{
 		allocator_free(allocator, ptrs[i]);

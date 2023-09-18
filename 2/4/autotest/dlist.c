@@ -38,7 +38,7 @@ typedef struct _DListNode
 	struct _DListNode* next;
 
 	void* data;
-}DListNode;
+} DListNode;
 
 struct _DList
 {
@@ -49,7 +49,7 @@ struct _DList
 
 static void dlist_destroy_data(DList* thiz, void* data)
 {
-	if(thiz->data_destroy != NULL)
+	if (thiz->data_destroy != NULL)
 	{
 		thiz->data_destroy(thiz->data_destroy_ctx, data);
 	}
@@ -61,7 +61,7 @@ static DListNode* dlist_create_node(DList* thiz, void* data)
 {
 	DListNode* node = malloc(sizeof(DListNode));
 
-	if(node != NULL)
+	if (node != NULL)
 	{
 		node->prev = NULL;
 		node->next = NULL;
@@ -73,7 +73,7 @@ static DListNode* dlist_create_node(DList* thiz, void* data)
 
 static void dlist_destroy_node(DList* thiz, DListNode* node)
 {
-	if(node != NULL)
+	if (node != NULL)
 	{
 		node->next = NULL;
 		node->prev = NULL;
@@ -88,7 +88,7 @@ DList* dlist_create(DListDataDestroyFunc data_destroy, void* data_destroy_ctx)
 {
 	DList* thiz = malloc(sizeof(DList));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		thiz->first = NULL;
 		thiz->data_destroy = data_destroy;
@@ -101,18 +101,18 @@ DList* dlist_create(DListDataDestroyFunc data_destroy, void* data_destroy_ctx)
 static DListNode* dlist_get_node(DList* thiz, size_t index, int fail_return_last)
 {
 	DListNode* iter = NULL;
-	
-	return_val_if_fail(thiz != NULL, NULL); 
+
+	return_val_if_fail(thiz != NULL, NULL);
 
 	iter = thiz->first;
 
-	while(iter != NULL && iter->next != NULL && index > 0)
+	while (iter != NULL && iter->next != NULL && index > 0)
 	{
 		iter = iter->next;
 		index--;
 	}
 
-	if(!fail_return_last)
+	if (!fail_return_last)
 	{
 		iter = index > 0 ? NULL : iter;
 	}
@@ -125,14 +125,14 @@ DListRet dlist_insert(DList* thiz, size_t index, void* data)
 	DListNode* node = NULL;
 	DListNode* cursor = NULL;
 
-	return_val_if_fail(thiz != NULL, DLIST_RET_INVALID_PARAMS); 
+	return_val_if_fail(thiz != NULL, DLIST_RET_INVALID_PARAMS);
 
-	if((node = dlist_create_node(thiz, data)) == NULL)
+	if ((node = dlist_create_node(thiz, data)) == NULL)
 	{
-		return DLIST_RET_OOM; 
+		return DLIST_RET_OOM;
 	}
 
-	if(thiz->first == NULL)
+	if (thiz->first == NULL)
 	{
 		thiz->first = node;
 
@@ -140,10 +140,10 @@ DListRet dlist_insert(DList* thiz, size_t index, void* data)
 	}
 
 	cursor = dlist_get_node(thiz, index, 1);
-	
-	if(index < dlist_length(thiz))
+
+	if (index < dlist_length(thiz))
 	{
-		if(thiz->first == cursor)
+		if (thiz->first == cursor)
 		{
 			thiz->first = node;
 		}
@@ -177,22 +177,22 @@ DListRet dlist_append(DList* thiz, void* data)
 DListRet dlist_delete(DList* thiz, size_t index)
 {
 	DListNode* cursor = dlist_get_node(thiz, index, 0);
-	
-	return_val_if_fail(cursor != NULL, DLIST_RET_INVALID_PARAMS); 
 
-	if(cursor != NULL)
+	return_val_if_fail(cursor != NULL, DLIST_RET_INVALID_PARAMS);
+
+	if (cursor != NULL)
 	{
-		if(cursor == thiz->first)
+		if (cursor == thiz->first)
 		{
 			thiz->first = cursor->next;
 		}
 
-		if(cursor->next != NULL)
+		if (cursor->next != NULL)
 		{
 			cursor->next->prev = cursor->prev;
 		}
 
-		if(cursor->prev != NULL)
+		if (cursor->prev != NULL)
 		{
 			cursor->prev->next = cursor->next;
 		}
@@ -207,9 +207,9 @@ DListRet dlist_get_by_index(DList* thiz, size_t index, void** data)
 {
 	DListNode* cursor = dlist_get_node(thiz, index, 0);
 
-	return_val_if_fail(cursor != NULL, DLIST_RET_INVALID_PARAMS); 
+	return_val_if_fail(cursor != NULL, DLIST_RET_INVALID_PARAMS);
 
-	if(cursor != NULL)
+	if (cursor != NULL)
 	{
 		*data = cursor->data;
 	}
@@ -221,9 +221,9 @@ DListRet dlist_set_by_index(DList* thiz, size_t index, void* data)
 {
 	DListNode* cursor = dlist_get_node(thiz, index, 0);
 
-	return_val_if_fail(cursor != NULL, DLIST_RET_INVALID_PARAMS); 
+	return_val_if_fail(cursor != NULL, DLIST_RET_INVALID_PARAMS);
 
-	if(cursor != NULL)
+	if (cursor != NULL)
 	{
 		cursor->data = data;
 	}
@@ -235,12 +235,12 @@ size_t   dlist_length(DList* thiz)
 {
 	size_t length = 0;
 	DListNode* iter = NULL;
-	
+
 	return_val_if_fail(thiz != NULL, 0);
 
 	iter = thiz->first;
 
-	while(iter != NULL)
+	while (iter != NULL)
 	{
 		length++;
 		iter = iter->next;
@@ -253,12 +253,12 @@ DListRet dlist_foreach(DList* thiz, DListDataVisitFunc visit, void* ctx)
 {
 	DListRet ret = DLIST_RET_OK;
 	DListNode* iter = NULL;
-	
+
 	return_val_if_fail(thiz != NULL && visit != NULL, DLIST_RET_INVALID_PARAMS);
 
 	iter = thiz->first;
 
-	while(iter != NULL && ret != DLIST_RET_STOP)
+	while (iter != NULL && ret != DLIST_RET_STOP)
 	{
 		ret = visit(ctx, iter->data);
 
@@ -276,9 +276,9 @@ int      dlist_find(DList* thiz, DListDataCompareFunc cmp, void* ctx)
 	return_val_if_fail(thiz != NULL && cmp != NULL, -1);
 
 	iter = thiz->first;
-	while(iter != NULL)
+	while (iter != NULL)
 	{
-		if(cmp(ctx, iter->data) == 0)
+		if (cmp(ctx, iter->data) == 0)
 		{
 			break;
 		}
@@ -293,11 +293,11 @@ void dlist_destroy(DList* thiz)
 {
 	DListNode* iter = NULL;
 	DListNode* next = NULL;
-	
+
 	return_if_fail(thiz != NULL);
 
 	iter = thiz->first;
-	while(iter != NULL)
+	while (iter != NULL)
 	{
 		next = iter->next;
 		dlist_destroy_node(thiz, iter);
@@ -344,7 +344,7 @@ void test_int_dlist(void)
 	int data = 0;
 	DList* dlist = dlist_create(NULL, NULL);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(dlist_append(dlist, (void*)i) == DLIST_RET_OK);
 		assert(dlist_length(dlist) == (i + 1));
@@ -357,23 +357,23 @@ void test_int_dlist(void)
 		assert(dlist_find(dlist, cmp_int, (void*)i) == i);
 	}
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(dlist_get_by_index(dlist, 0, (void**)&data) == DLIST_RET_OK);
 		assert(data == (i));
 		assert(dlist_length(dlist) == (n-i));
 		assert(dlist_delete(dlist, 0) == DLIST_RET_OK);
 		assert(dlist_length(dlist) == (n-i-1));
-		if((i + 1) < n)
+		if ((i + 1) < n)
 		{
 			assert(dlist_get_by_index(dlist, 0, (void**)&data) == DLIST_RET_OK);
 			assert((int)data == (i+1));
 		}
 	}
-	
+
 	assert(dlist_length(dlist) == 0);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(dlist_prepend(dlist, (void*)i) == DLIST_RET_OK);
 		assert(dlist_length(dlist) == (i + 1));
@@ -387,9 +387,9 @@ void test_int_dlist(void)
 
 	i = n - 1;
 	assert(dlist_foreach(dlist, check_and_dec_int, &i) == DLIST_RET_OK);
-	
+
 	s = dlist_length(dlist);
-	for(i = 1; i < n; i++)
+	for (i = 1; i < n; i++)
 	{
 		assert(dlist_insert(dlist, i, (void*)i) == DLIST_RET_OK);
 		assert(dlist_length(dlist) == (s + i));

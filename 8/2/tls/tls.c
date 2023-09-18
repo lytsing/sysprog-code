@@ -17,8 +17,8 @@ void* thread_entry(void* param)
 
 	if (pthread_getspecific(key) == NULL)
 	{
-        pthread_setspecific(key, (void*)pthread_self());
-    }
+		pthread_setspecific(key, (void*)pthread_self());
+	}
 
 	printf("data=%u\n", pthread_getspecific(key));
 
@@ -44,3 +44,4 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+

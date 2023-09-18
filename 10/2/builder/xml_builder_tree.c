@@ -35,13 +35,13 @@ typedef struct _PrivInfo
 {
 	XmlNode* root;
 	XmlNode* current;
-}PrivInfo;
+} PrivInfo;
 
 static void xml_builder_tree_on_start_element(XmlBuilder* thiz, const char* tag, const char** attrs)
 {
 	XmlNode* new_node = NULL;
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
-	
+
 	new_node = xml_node_create_normal(tag, attrs);
 	xml_node_append_child(priv->current, new_node);
 	priv->current = new_node;
@@ -50,7 +50,7 @@ static void xml_builder_tree_on_start_element(XmlBuilder* thiz, const char* tag,
 }
 
 static void xml_builder_tree_on_end_element(XmlBuilder* thiz, const char* tag)
-{ 
+{
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 	priv->current = priv->current->parent;
 	assert(priv->current != NULL);
@@ -62,7 +62,7 @@ static void xml_builder_tree_on_text(XmlBuilder* thiz, const char* text, size_t 
 {
 	XmlNode* new_node = NULL;
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
-	
+
 	new_node = xml_node_create_text(text);
 	xml_node_append_child(priv->current, new_node);
 
@@ -73,7 +73,7 @@ static void xml_builder_tree_on_comment(XmlBuilder* thiz, const char* text, size
 {
 	XmlNode* new_node = NULL;
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
-	
+
 	new_node = xml_node_create_comment(text);
 	xml_node_append_child(priv->current, new_node);
 
@@ -84,7 +84,7 @@ static void xml_builder_tree_on_pi_element(XmlBuilder* thiz, const char* tag, co
 {
 	XmlNode* new_node = NULL;
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
-	
+
 	new_node = xml_node_create_pi(tag, attrs);
 	xml_node_append_child(priv->current, new_node);
 
@@ -100,7 +100,7 @@ static void xml_builder_tree_on_error(XmlBuilder* thiz, int line, int row, const
 
 static void xml_builder_tree_destroy(XmlBuilder* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 		xml_node_destroy(priv->root);
@@ -115,7 +115,7 @@ XmlBuilder* xml_builder_tree_create(void)
 {
 	XmlBuilder* thiz = (XmlBuilder*)calloc(1, sizeof(XmlBuilder));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 
@@ -126,7 +126,7 @@ XmlBuilder* xml_builder_tree_create(void)
 		thiz->on_pi_element     = xml_builder_tree_on_pi_element;
 		thiz->on_error          = xml_builder_tree_on_error;
 		thiz->destroy           = xml_builder_tree_destroy;
-		
+
 		priv->root = xml_node_create_normal("__root__", NULL);
 		priv->current = priv->root;
 	}
@@ -138,7 +138,7 @@ XmlNode*    xml_builder_get_tree(XmlBuilder* thiz)
 {
 	XmlNode* tree = NULL;
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 		tree = priv->root->children;

@@ -24,7 +24,7 @@ static void*  allocator_normal_realloc(Allocator* thiz, void *ptr, size_t size)
 
 static void   allocator_normal_destroy(Allocator* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		free(thiz);
 	}
@@ -36,7 +36,7 @@ Allocator* allocator_normal_create(void)
 {
 	Allocator* thiz = (Allocator*)calloc(1, sizeof(Allocator));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		thiz->calloc  = allocator_normal_calloc;
 		thiz->alloc   = allocator_normal_alloc;
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	int n = 100;
 	Allocator* allocator = allocator_normal_create();
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		char* ptr = allocator_alloc(allocator, i);
 		ptr = allocator_realloc(allocator, ptr, i+4);

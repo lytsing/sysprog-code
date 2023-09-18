@@ -5,7 +5,7 @@ typedef struct _PrivInfo
 {
 	DArray* darray;
 	int offset;
-}PrivInfo;
+} PrivInfo;
 
 static Ret  darray_iterator_set(Iterator* thiz, void* data)
 {
@@ -29,7 +29,7 @@ static Ret  darray_iterator_next(Iterator* thiz)
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 	return_val_if_fail(priv->darray != NULL, RET_INVALID_PARAMS);
 
-	if((priv->offset + 1) < priv->darray->size)
+	if ((priv->offset + 1) < priv->darray->size)
 	{
 		priv->offset++;
 		ret = RET_OK;
@@ -44,7 +44,7 @@ static Ret  darray_iterator_prev(Iterator* thiz)
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 	return_val_if_fail(priv->darray != NULL, RET_INVALID_PARAMS);
 
-	if(priv->offset > 0)
+	if (priv->offset > 0)
 	{
 		priv->offset--;
 
@@ -62,7 +62,7 @@ static Ret  darray_iterator_advance(Iterator* thiz, int offset)
 	return_val_if_fail(priv->darray != NULL, RET_INVALID_PARAMS);
 
 	new_offset = priv->offset + offset;
-	if(new_offset >= 0 && new_offset < priv->darray->size)
+	if (new_offset >= 0 && new_offset < priv->darray->size)
 	{
 		priv->offset = new_offset;
 	}
@@ -84,7 +84,7 @@ static Ret  darray_iterator_clone(Iterator* thiz, Iterator** cloned)
 	return_val_if_fail(priv->darray != NULL, RET_INVALID_PARAMS);
 
 	*cloned = (Iterator*)malloc(sizeof(Iterator) + sizeof(PrivInfo));
-	if(*cloned != NULL)
+	if (*cloned != NULL)
 	{
 		memcpy(*cloned, thiz, sizeof(Iterator) + sizeof(PrivInfo));
 	}
@@ -94,7 +94,7 @@ static Ret  darray_iterator_clone(Iterator* thiz, Iterator** cloned)
 
 static void darray_iterator_destroy(Iterator* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		free(thiz);
 	}
@@ -107,7 +107,7 @@ Iterator* darray_iterator_create(DArray* darray)
 	Iterator* thiz = NULL;
 	return_val_if_fail(darray != NULL, NULL);
 
-	if((thiz = malloc(sizeof(Iterator) + sizeof(PrivInfo))) != NULL)
+	if ((thiz = malloc(sizeof(Iterator) + sizeof(PrivInfo))) != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 

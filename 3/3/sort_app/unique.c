@@ -2,7 +2,7 @@
 
 Ret  unique_print_int(void* ctx, void* data)
 {
-	if(*(int*)ctx != (int)data)
+	if (*(int*)ctx != (int)data)
 	{
 		*(int*)ctx = (int)data;
 		printf("%d ", (int)data);
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
 	DArray* darray = darray_create(NULL, NULL);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		darray_append(darray, (void*)(rand()%n));
 	}

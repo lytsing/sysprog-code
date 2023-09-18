@@ -44,7 +44,7 @@ typedef enum _DListRet
 	DLIST_RET_STOP,
 	DLIST_RET_PARAMS,
 	DLIST_RET_FAIL
-}DListRet;
+} DListRet;
 
 struct _DList;
 typedef struct _DList DList;

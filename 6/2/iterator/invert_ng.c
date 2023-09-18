@@ -10,7 +10,7 @@ Ret invert(LinearContainer* linear_container)
 	return_val_if_fail(linear_container != NULL, RET_INVALID_PARAMS);
 
 	j = linear_container_length(linear_container) - 1;
-	for(; i < j; i++, j--)
+	for (; i < j; i++, j--)
 	{
 		linear_container_get_by_index(linear_container, i, &data1);
 		linear_container_get_by_index(linear_container, j, &data2);
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 	int n = 101;
 
 	LinearContainer* linear_container = linear_container_dlist_create(NULL, NULL);
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		linear_container_append(linear_container, (void*)i);
 	}
@@ -43,3 +43,4 @@ int main(int argc, char* argv[])
 	return 0;
 }
 #endif/*INVERT_TEST*/
+

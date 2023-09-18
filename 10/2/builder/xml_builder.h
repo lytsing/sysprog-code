@@ -91,7 +91,7 @@ static inline void xml_builder_on_comment(XmlBuilder* thiz, const char* text, si
 {
 	return_if_fail(thiz != NULL);
 
-	if(thiz->on_comment != NULL)
+	if (thiz->on_comment != NULL)
 	{
 		thiz->on_comment(thiz, text, length);
 	}
@@ -103,7 +103,7 @@ static inline void xml_builder_on_pi_element(XmlBuilder* thiz, const char* tag, 
 {
 	return_if_fail(thiz != NULL);
 	
-	if(thiz->on_pi_element != NULL)
+	if (thiz->on_pi_element != NULL)
 	{
 		thiz->on_pi_element(thiz, tag, attrs);
 	}
@@ -115,7 +115,7 @@ static inline void xml_builder_on_error(XmlBuilder* thiz, int line, int row, con
 {
 	return_if_fail(thiz != NULL);
 
-	if(thiz->on_error != NULL)
+	if (thiz->on_error != NULL)
 	{
 		thiz->on_error(thiz, line, row, message);
 	}
@@ -125,7 +125,7 @@ static inline void xml_builder_on_error(XmlBuilder* thiz, int line, int row, con
 
 static inline void xml_builder_destroy(XmlBuilder* thiz)
 {
-	if(thiz != NULL && thiz->destroy != NULL)
+	if (thiz != NULL && thiz->destroy != NULL)
 	{
 		thiz->destroy(thiz);
 	}

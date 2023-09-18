@@ -9,16 +9,16 @@ int qsearch(void** array, size_t nr, void* data, DataCompareFunc cmp)
 
 	return_val_if_fail(array != NULL && cmp != NULL, -1);
 
-	while(low <= high)
+	while (low <= high)
 	{
 		mid  = low + ((high - low) >> 1);
 		result = cmp(array[mid], data);
 
-		if(result == 0)
+		if (result == 0)
 		{
 			return mid;
 		}
-		else if(result < 0)
+		else if (result < 0)
 		{
 			low = mid + 1;
 		}
@@ -43,12 +43,12 @@ static void search_test(size_t n)
 	int i = 0;
 	int* array = (int*)malloc(n * sizeof(int));
 	
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		array[i] = i;
 	}
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(qsearch((void**)array, n, (void*)i, int_cmp) == i);
 	}
@@ -61,7 +61,7 @@ static void search_test(size_t n)
 int main(int argc, char* argv[])
 {
 	int i = 0;
-	for(i = 1; i < 1000; i++)
+	for (i = 1; i < 1000; i++)
 	{
 		search_test(i);
 	}

@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	Queue* queue = NULL;
 	Module* module = NULL;
 	LinearContainerCreateFunc linear_container_create = NULL;
-	if(argc != 3)
+	if (argc != 3)
 	{
 		printf("%s sharelib linear_container_create\n", argv[0]);
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	module = module_create(argv[1], 0);
 	return_val_if_fail(module != NULL, 0);
 	linear_container_create = (LinearContainerCreateFunc)module_sym(module, argv[2]);
-	if(linear_container_create == NULL)
+	if (linear_container_create == NULL)
 	{
 		module_destroy(module);
 
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 
 	queue = queue_create(linear_container_create(NULL, NULL));
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(queue_push(queue, (void*)i) == RET_OK);
 		assert(queue_head(queue, (void**)&ret_data) == RET_OK);
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 
 	queue_foreach(queue, print_int, NULL);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(queue_head(queue, (void**)&ret_data) == RET_OK);
 		assert(ret_data == i );
@@ -54,3 +54,4 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+

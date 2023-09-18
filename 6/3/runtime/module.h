@@ -42,7 +42,7 @@ typedef enum _ModuleFlags
 {
 	MODULE_FLAGS_NONE,
 	MODULE_FLAGS_DELAY = 1
-}ModuleFlags;
+} ModuleFlags;
 
 Module* module_create(const char* file_name, ModuleFlags flags);
 void*   module_sym(Module* thiz, const char* func_name);

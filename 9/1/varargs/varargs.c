@@ -12,7 +12,7 @@ int accumlate(int nr, ...)
     va_list arg = NULL;
     va_start(arg, nr);
 
-    for(i = 0; i < nr; i++)
+    for (i = 0; i < nr; i++)
     {
         result += va_arg(arg, int);
     }

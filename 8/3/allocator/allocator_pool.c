@@ -5,7 +5,7 @@ typedef struct _FreeNode
 	size_t length;
 	struct _FreeNode* next;
 	struct _FreeNode* prev;
-}FreeNode;
+} FreeNode;
 
 #define MIN_SIZE 16
 #define MAX_SIZE 64
@@ -23,10 +23,10 @@ static void*  allocator_pool_calloc(Allocator* thiz, size_t nmemb, size_t size)
 	size_t total = nmemb * size;
 	PrivInfo* priv = thiz->priv;
 
-	if(total <= MAX_SIZE)
+	if (total <= MAX_SIZE)
 	{
 		ptr = allocator_alloc(thiz, total);
-		if(ptr != NULL)
+		if (ptr != NULL)
 		{
 			memset(ptr, 0x00, total);
 		}
@@ -44,12 +44,12 @@ static void*  allocator_pool_alloc(Allocator* thiz, size_t size)
 	void* ptr = NULL;
 	PrivInfo* priv = thiz->priv;
 
-	if(size <= MAX_SIZE)
+	if (size <= MAX_SIZE)
 	{
 		size_t index = (size - 1)/8;
-		if(priv->free_list[index] == NULL)
+		if (priv->free_list[index] == NULL)
 		{
-			priv->free_list[index] = allocator_alloc(priv->real_allocator, 
+			priv->free_list[index] = allocator_alloc(priv->real_allocator,
 				(index + 1) * 8
 		}
 	}
@@ -72,7 +72,7 @@ static void*  allocator_pool_realloc(Allocator* thiz, void *ptr, size_t size)
 
 static void   allocator_pool_destroy(Allocator* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		free(thiz);
 	}
@@ -84,7 +84,7 @@ Allocator* allocator_pool_create(size_t expand_delta)
 {
 	Allocator* thiz = (Allocator*)calloc(1, sizeof(Allocator));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		thiz->calloc  = allocator_pool_calloc;
 		thiz->alloc   = allocator_pool_alloc;
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
 	int n = 100;
 	Allocator* allocator = allocator_pool_create(128);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		char* ptr = allocator_alloc(allocator, i);
 		ptr = allocator_realloc(allocator, ptr, i+4);
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 		ptr = allocator_calloc(allocator, i+4, 4);
 		allocator_free(allocator, ptr);
 	}
-	
+
 	allocator_destroy(allocator);
 
 	return 0;

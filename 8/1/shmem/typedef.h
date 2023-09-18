@@ -43,7 +43,7 @@ typedef enum _Ret
 	RET_STOP,
 	RET_INVALID_PARAMS,
 	RET_FAIL
-}Ret;
+} Ret;
 
 #ifdef __cplusplus
 #define DECLS_BEGIN extern "C" {

@@ -6,7 +6,7 @@ Ret invert(Iterator* forward, Iterator* backward)
 	void* data2 = NULL;
 	return_val_if_fail(forward != NULL && backward != NULL, RET_INVALID_PARAMS);
 
-	for(; iterator_offset(forward) < iterator_offset(backward); iterator_next(forward), iterator_prev(backward))
+	for (; iterator_offset(forward) < iterator_offset(backward); iterator_next(forward), iterator_prev(backward))
 	{
 		iterator_get(forward, &data1);
 		iterator_get(backward, &data2);
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 	int last = n - 1;
 	DList* dlist = dlist_create(NULL, NULL);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		dlist_append(dlist, (void*)i);
 	}
@@ -47,3 +47,4 @@ int main(int argc, char* argv[])
 	return 0;
 }
 #endif/*INVERT_TEST*/
+

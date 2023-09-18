@@ -6,7 +6,7 @@ typedef struct _PrivInfo
 	DList* dlist;
 	DListNode* cursor;
 	int offset;
-}PrivInfo;
+} PrivInfo;
 
 static Ret  dlist_iterator_set(Iterator* thiz, void* data)
 {
@@ -34,7 +34,7 @@ static Ret  dlist_iterator_next(Iterator* thiz)
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 	return_val_if_fail(priv->cursor != NULL && priv->dlist != NULL, RET_INVALID_PARAMS);
 
-	if(priv->cursor->next != NULL)
+	if (priv->cursor->next != NULL)
 	{
 		priv->cursor = priv->cursor->next;
 		priv->offset++;
@@ -51,7 +51,7 @@ static Ret  dlist_iterator_prev(Iterator* thiz)
 	PrivInfo* priv = (PrivInfo*)thiz->priv;
 	return_val_if_fail(priv->cursor != NULL && priv->dlist != NULL, RET_INVALID_PARAMS);
 
-	if(priv->cursor->prev != NULL)
+	if (priv->cursor->prev != NULL)
 	{
 		priv->cursor = priv->cursor->prev;
 		priv->offset--;
@@ -71,22 +71,22 @@ static Ret  dlist_iterator_advance(Iterator* thiz, int offset)
 	return_val_if_fail(priv->cursor != NULL && priv->dlist != NULL, RET_INVALID_PARAMS);
 
 	iter = priv->cursor;
-	if(offset > 0)
+	if (offset > 0)
 	{
-		for(n = offset; n > 0 && iter != NULL; n--)
+		for (n = offset; n > 0 && iter != NULL; n--)
 		{
 			iter = iter->next;
 		}
 	}
 	else
 	{
-		for(n = -offset; n > 0 && iter != NULL; n--)
+		for (n = -offset; n > 0 && iter != NULL; n--)
 		{
 			iter = iter->prev;
 		}
 	}
 
-	if(iter != NULL)
+	if (iter != NULL)
 	{
 		priv->cursor = iter;
 		priv->offset += offset;
@@ -111,7 +111,7 @@ static Ret  dlist_iterator_clone(Iterator* thiz, Iterator** cloned)
 	return_val_if_fail(priv->cursor != NULL && priv->dlist != NULL, RET_INVALID_PARAMS);
 
 	*cloned = (Iterator*)malloc(sizeof(Iterator) + sizeof(PrivInfo));
-	if(*cloned != NULL)
+	if (*cloned != NULL)
 	{
 		memcpy(*cloned, thiz, sizeof(Iterator) + sizeof(PrivInfo));
 	}
@@ -121,7 +121,7 @@ static Ret  dlist_iterator_clone(Iterator* thiz, Iterator** cloned)
 
 static void dlist_iterator_destroy(Iterator* thiz)
 {
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		free(thiz);
 	}
@@ -134,7 +134,7 @@ Iterator* dlist_iterator_create(DList* dlist)
 	Iterator* thiz = NULL;
 	return_val_if_fail(dlist != NULL, NULL);
 
-	if((thiz = malloc(sizeof(Iterator) + sizeof(PrivInfo))) != NULL)
+	if ((thiz = malloc(sizeof(Iterator) + sizeof(PrivInfo))) != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 

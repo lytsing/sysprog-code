@@ -16,7 +16,7 @@ int backtrace(void** buffer, int size)
 	int ebp = p[1 + OFFSET];
 	int eip = p[2 + OFFSET];
 
-	for(i = 0; i < size; i++)
+	for (i = 0; i < size; i++)
 	{
 		buffer[i] = (void*)eip;
 		p = (int*)ebp;
@@ -34,7 +34,7 @@ static void test2()
 
 	backtrace(buffer, MAX_LEVEL);
 
-	for(i = 0; i < MAX_LEVEL; i++)
+	for (i = 0; i < MAX_LEVEL; i++)
 	{
 		printf("called by %p\n",	buffer[i]);
 	}

@@ -10,7 +10,7 @@ static void test_int_linear_container(LinearContainer* linear_container)
 	int n = 100;
 	int data = 0;
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(linear_container_append(linear_container, (void*)i) == RET_OK);
 		assert(linear_container_length(linear_container) == (i + 1));
@@ -23,7 +23,7 @@ static void test_int_linear_container(LinearContainer* linear_container)
 		assert(linear_container_find(linear_container, cmp_int, (void*)i) == i);
 	}
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(linear_container_get_by_index(linear_container, 0, (void**)&data) == RET_OK);
 		assert(data == (i));
@@ -39,7 +39,7 @@ static void test_int_linear_container(LinearContainer* linear_container)
 	
 	assert(linear_container_length(linear_container) == 0);
 
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		assert(linear_container_prepend(linear_container, (void*)i) == RET_OK);
 		assert(linear_container_length(linear_container) == (i + 1));

@@ -5,29 +5,29 @@
 char* str_toupper_bad(char* str)
 {
 	char* p = str;
-	if(p != NULL)
+	if (p != NULL)
 	{
-		while(*p != '\0')
+		while (*p != '\0')
 		{
-			if('a' <= *p && *p <= 'z')
+			if ('a' <= *p && *p <= 'z')
 			{
-				*p = *p - ('a' - 'A'); 
+				*p = *p - ('a' - 'A');
 			}
 			p++;
 		}
 	}
-	
+
 	return str;
 }
 
 char* str_toupper_good(char* str)
 {
 	char* p = str;
-	if(p != NULL)
+	if (p != NULL)
 	{
-		while(*p != '\0')
+		while (*p != '\0')
 		{
-			if(islower(*p))
+			if (islower(*p))
 			{
 				*p = toupper(*p);
 			}
@@ -45,3 +45,4 @@ int main(int argc, char* argv[])
 	printf("%s\n", str_toupper_bad(str1));
 	printf("%s\n", str_toupper_good(str2));
 }
+

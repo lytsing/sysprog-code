@@ -14,20 +14,20 @@ int word_segmentation(const char* text, OnWordFunc on_word, void* ctx)
 		STAT_INIT,
 		STAT_IN_WORD,
 		STAT_OUT_WORD,
-	}state = STAT_INIT;
+	} state = STAT_INIT;
 
 	int count = 0;
 	char* copy_text = strdup(text);
 	char* p = copy_text;
 	char* word = copy_text;
 
-	for(p = copy_text; *p != '\0'; p++)
+	for (p = copy_text; *p != '\0'; p++)
 	{
-		switch(state)
+		switch (state)
 		{
 			case STAT_INIT:
 			{
-				if(IS_WORD_CHAR(*p))
+				if (IS_WORD_CHAR(*p))
 				{
 					word = p;
 					state = STAT_IN_WORD;
@@ -36,7 +36,7 @@ int word_segmentation(const char* text, OnWordFunc on_word, void* ctx)
 			}
 			case STAT_IN_WORD:
 			{
-				if(!IS_WORD_CHAR(*p))
+				if (!IS_WORD_CHAR(*p))
 				{
 					count++;
 					*p = '\0';
@@ -47,7 +47,7 @@ int word_segmentation(const char* text, OnWordFunc on_word, void* ctx)
 			}
 			case STAT_OUT_WORD:
 			{
-				if(IS_WORD_CHAR(*p))
+				if (IS_WORD_CHAR(*p))
 				{
 					word = p;
 					state = STAT_IN_WORD;
@@ -58,7 +58,7 @@ int word_segmentation(const char* text, OnWordFunc on_word, void* ctx)
 		}
 	}
 
-	if(state == STAT_IN_WORD)
+	if (state == STAT_IN_WORD)
 	{
 		count++;
 		on_word(ctx, word);

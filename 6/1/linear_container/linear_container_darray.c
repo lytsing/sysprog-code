@@ -34,7 +34,7 @@
 typedef struct _PrivInfo
 {
 	DArray* darray;
-}PrivInfo;
+} PrivInfo;
 
 static Ret linear_container_darray_insert(LinearContainer* thiz, size_t index, void* data)
 {
@@ -113,7 +113,7 @@ LinearContainer* linear_container_darray_create(DataDestroyFunc data_destroy, vo
 {
 	LinearContainer* thiz = (LinearContainer*)malloc(sizeof(LinearContainer) + sizeof(PrivInfo));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		PrivInfo* priv = (PrivInfo*)thiz->priv;
 		priv->darray = darray_create(data_destroy, ctx);

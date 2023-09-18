@@ -43,12 +43,12 @@ typedef enum _Ret
 	RET_STOP,
 	RET_INVALID_PARAMS,
 	RET_FAIL
-}Ret;
+} Ret;
 
 typedef void     (*DataDestroyFunc)(void* ctx, void* data);
 typedef int      (*DataCompareFunc)(void* ctx, void* data);
 typedef Ret      (*DataVisitFunc)(void* ctx, void* data);
-typedef int       (*DataHashFunc)(void* data);
+typedef int      (*DataHashFunc)(void* data);
 
 #ifdef __cplusplus
 #define DECLS_BEGIN extern "C" {

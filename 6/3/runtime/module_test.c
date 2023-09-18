@@ -3,7 +3,7 @@
 
 int main(int argc, char* argv[])
 {
-	if(argc != 3)
+	if (argc != 3)
 	{
 		printf("%s module function\n", argv[0]);
 
@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	}
 
 	Module* module = module_create(argv[1], 0);
-	if(module != NULL)
+	if (module != NULL)
 	{
 		void* func = module_sym(module, argv[2]);
 		printf("func=%p\n", func);

@@ -37,7 +37,7 @@ typedef struct _DListNode
 	struct _DListNode* next;
 
 	void* data;
-}DListNode;
+} DListNode;
 
 struct _DList
 {
@@ -48,7 +48,7 @@ struct _DList
 
 static void dlist_destroy_data(DList* thiz, void* data)
 {
-	if(thiz->data_destroy != NULL)
+	if (thiz->data_destroy != NULL)
 	{
 		thiz->data_destroy(thiz->data_destroy_ctx, data);
 	}
@@ -60,7 +60,7 @@ static DListNode* dlist_create_node(DList* thiz, void* data)
 {
 	DListNode* node = malloc(sizeof(DListNode));
 
-	if(node != NULL)
+	if (node != NULL)
 	{
 		node->prev = NULL;
 		node->next = NULL;
@@ -72,7 +72,7 @@ static DListNode* dlist_create_node(DList* thiz, void* data)
 
 static void dlist_destroy_node(DList* thiz, DListNode* node)
 {
-	if(node != NULL)
+	if (node != NULL)
 	{
 		node->next = NULL;
 		node->prev = NULL;
@@ -87,7 +87,7 @@ DList* dlist_create(DListDataDestroyFunc data_destroy, void* data_destroy_ctx)
 {
 	DList* thiz = malloc(sizeof(DList));
 
-	if(thiz != NULL)
+	if (thiz != NULL)
 	{
 		thiz->first = NULL;
 		thiz->data_destroy = data_destroy;
@@ -101,13 +101,13 @@ static DListNode* dlist_get_node(DList* thiz, size_t index, int fail_return_last
 {
 	DListNode* iter = thiz->first;
 
-	while(iter != NULL && iter->next != NULL && index > 0)
+	while (iter != NULL && iter->next != NULL && index > 0)
 	{
 		iter = iter->next;
 		index--;
 	}
 
-	if(!fail_return_last)
+	if (!fail_return_last)
 	{
 		iter = index > 0 ? NULL : iter;
 	}
@@ -120,12 +120,12 @@ DListRet dlist_insert(DList* thiz, size_t index, void* data)
 	DListNode* node = NULL;
 	DListNode* cursor = NULL;
 
-	if((node = dlist_create_node(thiz, data)) == NULL)
+	if ((node = dlist_create_node(thiz, data)) == NULL)
 	{
-		return DLIST_RET_OOM; 
+		return DLIST_RET_OOM;
 	}
 
-	if(thiz->first == NULL)
+	if (thiz->first == NULL)
 	{
 		thiz->first = node;
 
@@ -133,10 +133,10 @@ DListRet dlist_insert(DList* thiz, size_t index, void* data)
 	}
 
 	cursor = dlist_get_node(thiz, index, 1);
-	
-	if(index < dlist_length(thiz))
+
+	if (index < dlist_length(thiz))
 	{
-		if(thiz->first == cursor)
+		if (thiz->first == cursor)
 		{
 			thiz->first = node;
 		}
@@ -171,19 +171,19 @@ DListRet dlist_delete(DList* thiz, size_t index)
 {
 	DListNode* cursor = dlist_get_node(thiz, index, 0);
 
-	if(cursor != NULL)
+	if (cursor != NULL)
 	{
-		if(cursor == thiz->first)
+		if (cursor == thiz->first)
 		{
 			thiz->first = cursor->next;
 		}
 
-		if(cursor->next != NULL)
+		if (cursor->next != NULL)
 		{
 			cursor->next->prev = cursor->prev;
 		}
 
-		if(cursor->prev != NULL)
+		if (cursor->prev != NULL)
 		{
 			cursor->prev->next = cursor->next;
 		}
@@ -198,7 +198,7 @@ DListRet dlist_get_by_index(DList* thiz, size_t index, void** data)
 {
 	DListNode* cursor = dlist_get_node(thiz, index, 0);
 
-	if(cursor != NULL)
+	if (cursor != NULL)
 	{
 		*data = cursor->data;
 	}
@@ -210,7 +210,7 @@ DListRet dlist_set_by_index(DList* thiz, size_t index, void* data)
 {
 	DListNode* cursor = dlist_get_node(thiz, index, 0);
 
-	if(cursor != NULL)
+	if (cursor != NULL)
 	{
 		cursor->data = data;
 	}
@@ -223,7 +223,7 @@ size_t   dlist_length(DList* thiz)
 	size_t length = 0;
 	DListNode* iter = thiz->first;
 
-	while(iter != NULL)
+	while (iter != NULL)
 	{
 		length++;
 		iter = iter->next;
@@ -237,7 +237,7 @@ DListRet dlist_foreach(DList* thiz, DListDataVisitFunc visit, void* ctx)
 	DListRet ret = DLIST_RET_OK;
 	DListNode* iter = thiz->first;
 
-	while(iter != NULL && ret != DLIST_RET_STOP)
+	while (iter != NULL && ret != DLIST_RET_STOP)
 	{
 		ret = visit(ctx, iter->data);
 
@@ -252,9 +252,9 @@ int      dlist_find(DList* thiz, DListDataCompareFunc cmp, void* ctx)
 	int i = 0;
 	DListNode* iter = thiz->first;
 
-	while(iter != NULL)
+	while (iter != NULL)
 	{
-		if(cmp(ctx, iter->data) == 0)
+		if (cmp(ctx, iter->data) == 0)
 		{
 			break;
 		}
@@ -270,7 +270,7 @@ void dlist_destroy(DList* thiz)
 	DListNode* iter = thiz->first;
 	DListNode* next = NULL;
 
-	while(iter != NULL)
+	while (iter != NULL)
 	{
 		next = iter->next;
 		dlist_destroy_node(thiz, iter);

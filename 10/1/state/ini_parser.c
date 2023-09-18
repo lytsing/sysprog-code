@@ -9,20 +9,20 @@ const char* strtrim(char* str)
 
 	p = str + strlen(str) - 1;
 
-	while(p != str && isspace(*p))
+	while (p != str && isspace(*p))
 	{
 		*p = '\0';
 		p--;
 	}
 
 	p = str;
-	while(*p != '\0' && isspace(*p)) p++;
+	while (*p != '\0' && isspace(*p)) p++;
 
-	if(p != str)
+	if (p != str)
 	{
 		char* s = p;
 		char* d = str;
-		while(*s != '\0')
+		while (*s != '\0')
 		{
 			*d = *s;
 			d++;
@@ -48,24 +48,24 @@ static void ini_parse_internal(char* buffer, char comment_char, char delim_char)
 		STAT_KEY,
 		STAT_VALUE,
 		STAT_COMMENT
-	}state = STAT_NONE;
+	} state = STAT_NONE;
 
-	for(p = buffer; *p != '\0'; p++)
+	for (p = buffer; *p != '\0'; p++)
 	{
-		switch(state)
+		switch (state)
 		{
 			case STAT_NONE:
 			{
-				if(*p == '[')
+				if (*p == '[')
 				{
 					state = STAT_GROUP;
 					group_start = p + 1;
 				}
-				else if(*p == comment_char)
+				else if (*p == comment_char)
 				{
 					state = STAT_COMMENT;
 				}
-				else if(!isspace(*p))
+				else if (!isspace(*p))
 				{
 					state = STAT_KEY;
 					key_start = p;
@@ -74,7 +74,7 @@ static void ini_parse_internal(char* buffer, char comment_char, char delim_char)
 			}
 			case STAT_GROUP:
 			{
-				if(*p == ']')
+				if (*p == ']')
 				{
 					*p = '\0';
 					state = STAT_NONE;
@@ -85,7 +85,7 @@ static void ini_parse_internal(char* buffer, char comment_char, char delim_char)
 			}
 			case STAT_COMMENT:
 			{
-				if(*p == '\n')
+				if (*p == '\n')
 				{
 					state = STAT_NONE;
 					break;
@@ -94,7 +94,7 @@ static void ini_parse_internal(char* buffer, char comment_char, char delim_char)
 			}
 			case STAT_KEY:
 			{
-				if(*p == delim_char || (delim_char == ' ' && *p == '\t'))
+				if (*p == delim_char || (delim_char == ' ' && *p == '\t'))
 				{
 					*p = '\0';
 					state = STAT_VALUE;
@@ -104,7 +104,7 @@ static void ini_parse_internal(char* buffer, char comment_char, char delim_char)
 			}
 			case STAT_VALUE:
 			{
-				if(*p == '\n' || *p == '\r')
+				if (*p == '\n' || *p == '\r')
 				{
 					*p = '\0';
 					state = STAT_NONE;
@@ -118,7 +118,7 @@ static void ini_parse_internal(char* buffer, char comment_char, char delim_char)
 		}
 	}
 
-	if(state == STAT_VALUE)
+	if (state == STAT_VALUE)
 	{
 		strtrim(key_start);
 		strtrim(value_start);
